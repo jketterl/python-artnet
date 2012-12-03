@@ -75,8 +75,23 @@ class DmxPacket(ArtNetPacket):
 		return header + ''.join([struct.pack('!B', c) for c in self.channels])
 	
 	@classmethod
-	def decode(cls, address, data):
-		return cls(source=address)
+    def decode(cls, address, data):
+        try:
+            parts = struct.unpack(''.join([
+                '>8s', # ID Field ("Art-Net")
+                'H', # opcode
+                'H', # artnet protocol revision number
+                'B',  # sequence number
+                'B',  # physical
+                'H', # net & port address
+                'H', # length
+                '512B'   # data
+            ]), data)
+            res = cls(source=address)
+            res.channels = parts[7:len(data)];
+            return res
+        except struct.error:
+            pass
 
 class PollPacket(ArtNetPacket):
 	opcode = 0x0020
