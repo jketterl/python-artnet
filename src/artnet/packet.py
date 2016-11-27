@@ -223,10 +223,10 @@ class PollReplyPacket(ArtNetPacket):
 			'B',   # 35 mac address
 			'B',   # 36 mac address lo
 			'B', #extra
-			#'4B',  # 37 bind ip
-			# 'B',   # 38 bind index
-			# 'B',   # 39 status 2
-			# '26B', # 40 filler
+			'4B',  # 37 bind ip
+			'B',   # 38 bind index
+			'B',   # 39 status 2
+			'24B', # 40 filler
 		]), data)
 		return cls(parts, source=address)
 
